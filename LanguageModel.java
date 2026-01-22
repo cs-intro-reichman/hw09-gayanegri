@@ -40,8 +40,6 @@ public class LanguageModel {
         for(int i = 0; i < windowLength && !in.isEmpty(); i++) {
             window += in.readChar();
         }
-        
-        String prefix = window;
 
         while (!in.isEmpty()) {
             c = in.readChar();
@@ -55,22 +53,9 @@ public class LanguageModel {
             window = window.substring(1) + c;
         }
 
-        for (int i = 0; i < prefix.length(); i++) {
-            c = prefix.charAt(i);
-
-        List probs = CharDataMap.get(window);
-        if(probs == null) {
-            probs = new List();
-            CharDataMap.put(window, probs);
-        }
-
-        probs.update(c);
-        window = window.substring(1) + c;
-    }
-        for (List probs : CharDataMap.values()) {
+        for (List probs : CharDataMap.values()) 
             calculateProbabilities(probs);
 	}
-}
 
 
     // Computes and sets the probabilities (p and cp fields) of all the
@@ -101,7 +86,7 @@ public class LanguageModel {
         CharData[] arr = probs.toArray();
         int i = 0;
         while(i < arr.length){
-            if(arr[i].cp > r){
+            if(arr[i].cp >= r){
                 return arr[i].chr;
             }
             i++;
